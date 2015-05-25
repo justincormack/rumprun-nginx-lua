@@ -53,4 +53,3 @@ nginx/src:
 clean:
 	$(MAKE) -C nginx clean
 	rm -f bin/nginx
-	rm -f images/stubetc.iso images/data.iso
