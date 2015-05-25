@@ -1,6 +1,6 @@
 # Build nginx with Docker
 
-FROM justincormack/frankenlibc
+FROM justincormack/rump-lua
 
 MAINTAINER Justin Cormack
 
