@@ -3,7 +3,7 @@ ifeq (${CC},)
 $(error set $$RUMPRUN_CC)
 endif
 
-all: bin/nginx images
+all: bin/nginx
 
 bin/nginx: nginx/objs/nginx
 	mkdir -p bin
@@ -48,15 +48,6 @@ nginx/Makefile: nginx/src
 nginx/src:
 	git submodule init
 	git submodule update
-
-.PHONY: images
-images: images/stubetc.iso images/data.iso
-
-images/stubetc.iso: images/stubetc/*
-	genisoimage -l -r -o images/stubetc.iso images/stubetc
-
-images/data.iso: images/data/conf/* images/data/www/*
-	genisoimage -l -r -o images/data.iso images/data
 
 .PHONY: clean
 clean:
