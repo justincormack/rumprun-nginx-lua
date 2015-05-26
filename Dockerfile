@@ -1,6 +1,6 @@
 # Build nginx with Docker
 
-FROM justincormack/rump-lua
+FROM justincormack/frankenlibc
 
 MAINTAINER Justin Cormack
 
@@ -9,6 +9,7 @@ COPY . /usr/src/rump-nginx-lua
 WORKDIR /usr/src/rump-nginx-lua
 
 ENV RUMPRUN_CC=rumprun-cc \
+  CC=rumprun-cc \
   LUA_LIB=/usr/local/lib \
   LUA_INC=/usr/local/include \
   DEVEL_KIT_PATH=/usr/src/rump-nginx-lua/ngx_devel_kit-0.2.19 \
@@ -19,5 +20,7 @@ RUN \
   curl https://codeload.github.com/simpl/ngx_devel_kit/tar.gz/v0.2.19 | tar xzf - && \
   curl https://codeload.github.com/openresty/lua-nginx-module/tar.gz/v0.9.15 | tar xzf - && \
   curl ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.gz | tar xzf - && \
+  curl http://www.lua.org/ftp/lua-5.1.5.tar.gz | tar xzf - && \
+  cd lua-5.1.5 && sed -i 's/CC= gcc//' src/Makefile && make bsd && make install && make clean && cd .. && \
   make && cp bin/nginx /usr/local/bin && make clean && \
   rm -rf ngx_devel_kit-0.2.19 lua-nginx-module-0.9.15 pcre-8.37
