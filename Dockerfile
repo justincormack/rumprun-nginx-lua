@@ -1,6 +1,6 @@
 # Build nginx with Docker
 
-FROM justincormack/frankenlibc
+FROM justincormack/frankenlibc2
 
 MAINTAINER Justin Cormack
 
