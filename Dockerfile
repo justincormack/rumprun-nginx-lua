@@ -1,15 +1,15 @@
-# Build nginx with Docker
+# Build nginx with rumprun-xen
 
-FROM justincormack/frankenlibc
+FROM justincormack/rumprun
 
-MAINTAINER Justin Cormack
+MAINTAINER Justin Cormack <justin@specialbusservice.com>
 
 COPY . /usr/src/rump-nginx-lua
 
 WORKDIR /usr/src/rump-nginx-lua
 
-ENV RUMPRUN_CC=rumprun-cc \
-  CC=rumprun-cc \
+ENV RUMPRUN_CC=rumprun-xen-cc \
+  CC=rumprun-xen-cc \
   LUA_LIB=/usr/local/lib \
   LUA_INC=/usr/local/include \
   DEVEL_KIT_PATH=/usr/src/rump-nginx-lua/ngx_devel_kit-0.2.19 \
@@ -22,5 +22,8 @@ RUN \
   curl ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.gz | tar xzf - && \
   curl http://www.lua.org/ftp/lua-5.1.5.tar.gz | tar xzf - && \
   cd lua-5.1.5 && sed -i 's/CC= gcc//' src/Makefile && make bsd && make install && make clean && cd .. && \
-  make && cp bin/nginx /usr/local/bin && make clean && \
+  git submodule update --init && \
+  cat pcre.patch | patch -p0 && \
+  make && rumpbake xen_pv /usr/local/bin/nginx bin/nginx && \
+  make clean && \
   rm -rf ngx_devel_kit-0.2.19 lua-nginx-module-0.9.15 pcre-8.37
