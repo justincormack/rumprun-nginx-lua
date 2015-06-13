@@ -24,6 +24,9 @@ RUN \
   cd lua-5.1.5 && sed -i 's/CC= gcc//' src/Makefile && make bsd && make install && make clean && cd .. && \
   git submodule update --init && \
   cat pcre.patch | patch -p0 && \
-  make && rumpbake xen_pv /usr/local/bin/nginx bin/nginx && \
+  make && \
+  rumpbake xen_pv /usr/local/bin/nginx bin/nginx && \
+  rumpbake hw_generic /usr/local/bin/nginx.hw_generic bin/nginx && \
+  rumpbake hw_virtio /usr/local/bin/nginx.hw_virtio bin/nginx && \
   make clean && \
   rm -rf ngx_devel_kit-0.2.19 lua-nginx-module-0.9.15 pcre-8.37
